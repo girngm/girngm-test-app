@@ -11,8 +11,8 @@ class Users extends React.Component {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th className="head_row">Фамилия</th>
-                                    <th className="head_row">Имя</th>
+                                    <th className="head_row familia">Фамилия</th>
+                                    <th className="head_row username">Имя</th>
                                     <th className="head_row">Отчество</th>
                                     <th className="head_row">Email</th>
                                     <th className="head_row phone_number">Телефон</th>

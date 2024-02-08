@@ -13,18 +13,26 @@ class User extends React.Component {
     render() {
         return (
             <div className="user">
-                <table className="users_table">
-                    <tbody>
-                        <tr>
-                            <td className="row">{this.user.lastname}</td>
-                            <td className="row">{this.user.firstname}</td>
-                            <td className="row">{this.user.fathername}</td>
-                            <td className="row">{this.user.email}</td>
-                            <td className="row">{this.user.phone}</td>
-                            <td className="row">{this.user.post}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div className="block">
+                    <div className="element">
+                        <p className="row">{this.user.lastname}</p>
+                    </div>
+                    <div className="element pre-fathername">
+                        <p className="row">{this.user.firstname}</p>
+                    </div>
+                    <div className="element pre-email">
+                        <p className="row">{this.user.fathername}</p>
+                    </div>
+                    <div className="element">
+                        <p className="row">{this.user.email}</p>
+                    </div>
+                    <div className="element phone">
+                        <p className="row">{this.user.phone}</p>
+                    </div>
+                    <div className="element">
+                        <p className="row">{this.user.post}</p>
+                    </div>
+                </div>
                     <TiDeleteOutline onClick={() => this.props.onDelete(this.user.id)} className="delete-icon" />
                     <TiCogOutline onClick={() => {
                         this.setState({

@@ -19,8 +19,8 @@ body {
 }
 
 main {
-    margin: 50px 100px;
-    width: 60%;
+    margin: 50px 50px;
+    width: 65%;
     float: left;
 }
 
@@ -124,7 +124,7 @@ form button:hover {
 }
 
 .row {
-    width: 10%;
+    width: 20%;
 }
 
 .head_row {
@@ -132,7 +132,7 @@ form button:hover {
 }
 
 .user .users_table {
-    width: 1000px;
+    width: 90%;
 }
 
 .table {
@@ -148,4 +148,35 @@ form button:hover {
     float: left;
     width: 100%;
     text-align: center;
+}
+
+.block {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.element {
+    width: 190px;
+    text-align: center;
+}
+
+.pre-email {
+    width: 150px;
+    margin-left: 0px;
+}
+
+.pre-fathername {
+    width: 170px;
+    margin-left: 20px;
+}
+
+.phone {
+    margin-right: 40px;
+    margin-left: 20px;
+}
+
+.familia,
+.username {
+    text-align: left;
 }
