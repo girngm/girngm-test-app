@@ -1,10 +1,28 @@
-import React from "react"
-import User from "./User"
+import React, { Component } from "react";
+import User from "./User";;
 
-class Users extends React.Component {
+interface UserField {
+    id: number;
+    lastname: string;
+    firstname: string;
+    fathername: string;
+    email: string;
+    phone: string;
+    post: string;
+}
+
+interface UsersProps {
+    users: UserField[];
+    onEdit: (user: any) => void;
+    onDelete: (id: number) => void;
+}
+
+class Users extends Component<UsersProps> {
 
     render() {
-        if(this.props.users.length > 0)
+        const { users } = this.props;
+
+        if (users.length > 0) {
             return (
                 <div className="users_list">
                     <div>
@@ -21,18 +39,19 @@ class Users extends React.Component {
                             </thead>
                         </table>
                     </div>
-                    {this.props.users.map((el) => (
+                    {users.map((el) => (
                         <User onEdit={this.props.onEdit} onDelete={this.props.onDelete} key={el.id} user={el}/>
                     ))} 
-                </div>    
-            )
-        else
+                </div>
+            );
+        } else {
             return (
                 <div className="user">
-                   <h3>Пользователей нет</h3>
+                    <h3>Пользователей нет</h3>
                 </div>
-            )
-  }
+            );
+        }
+    }
 }
 
-export default Users
+export default Users;
