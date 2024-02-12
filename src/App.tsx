@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import Users from "./components/Users";
+import AddUser from "./components/AddUser";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface User {
+    id: number;
+    lastname: string;
+    firstname: string;
+    fathername: string;
+    email: string;
+    phone: string;
+    post: string;
 }
 
-export default App
+const App: React.FC = () => {
+    const [users, setUsers] = useState<User[]>([
+        {
+            id: 1,
+            lastname: "Иванов",
+            firstname: "Иван",
+            fathername: "Иванович",
+            email: 'ivan.ivanov@yandex.ru',
+            phone: "+7(904)5823423",
+            post: "Директор"
+        },
+        {
+            id: 2,
+            lastname: "Петров",
+            firstname: "Пётр",
+            fathername: "Петрович",
+            email: 'petr.petrov@yandex.ru',
+            phone: "+7(951)5713279",
+            post: "Администратор"
+        }
+    ]);
+
+    const deleteUser = (id: number) => {
+        setUsers(prevUsers => prevUsers.filter(user => user.id !== id));
+    };
+
+    const editUser = (editedUser: User) => {
+        setUsers(prevUsers => prevUsers.map(user => user.id === editedUser.id ? editedUser : user));
+    };
+    
+    const addUser = (newUser: Omit<User, "id">) => {
+        const id = users.length + 1;
+        setUsers(prevUsers => [...prevUsers, { id, ...newUser }]);
+    };
+
+    return (
+        <div>
+            <div>
+                <header className="header">
+                    Справочник пользователей
+                </header>
+                <main>
+                    <Users users={users} onEdit={editUser} onDelete={deleteUser} />
+                </main>
+                <aside>
+                    <AddUser onAdd={addUser} />
+                </aside>
+            </div>
+        </div>
+    );
+};
+
+export default App;
