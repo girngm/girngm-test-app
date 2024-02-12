@@ -72,7 +72,6 @@ class SecondApp extends Component<{}, AppState> {
     editUser(user: User) {
         let allUsers = this.state.users.slice();
         allUsers[user.id - 1] = user;
-    
         this.setState({ users: [] }, () => {
             this.setState({ users: [...allUsers] });
         });
