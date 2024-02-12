@@ -1,4 +1,4 @@
-import React, { Component, FormEvent } from "react";
+import React, { useState, useRef, FormEvent } from "react";
 
 interface User {
     id?: number;
@@ -15,83 +15,65 @@ interface AddUserProps {
     onAdd: (user: User) => void;
 }
 
-interface AddUserState {
-    lastname: string;
-    firstname: string;
-    fathername: string;
-    email: string;
-    phone: string;
-    post: string;
-}
+const AddUser: React.FC<AddUserProps> = ({ user, onAdd  }) => {
+    const [lastname, setLastname] = useState<string>("");
+    const [firstname, setFirstname] = useState<string>("");
+    const [fathername, setFathername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
+    const [post, setPost] = useState<string>("");
 
-class AddUser extends Component<AddUserProps, AddUserState> {
-    private myForm: HTMLFormElement | null = null;
+    const myForm = useRef<HTMLFormElement>(null);
 
-    constructor(props: AddUserProps) {
-        super(props);
-        this.state = {
-            lastname: "",
-            firstname: "",
-            fathername: "",
-            email: "",
-            phone: "",
-            post: ""
-        };
-    }
-
-    render() {
-        return (
-            <form ref={(el) => this.myForm = el} onSubmit={this.handleSubmit}>
-                <input placeholder="Фамилия" value={this.state.lastname} onChange={(e) => this.setState({ lastname: e.target.value })}/>
-                <input placeholder="Имя" value={this.state.firstname} onChange={(e) => this.setState({ firstname: e.target.value })}/>
-                <input placeholder="Отчество" value={this.state.fathername} onChange={(e) => this.setState({ fathername: e.target.value })}/>
-                <input placeholder="Email" value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })}/>
-                <input placeholder="Номер телефона" value={this.state.phone} onChange={(e) => this.setState({ phone: e.target.value })}/>
-                
-                <select id="posts" name="posts" value={this.state.post} onChange={(e) => this.setState({ post: e.target.value })}>
-                    <option hidden>Выберите должность</option>
-                    <option>Инженер</option>
-                    <option>Техник</option>
-                    <option>Механик</option>
-                    <option>Оператор</option>
-                    <option>Начальник смены</option>
-                </select>
-                <button type="submit">Добавить</button>
-            </form>
-        );
-    }
-
-    handleSubmit = (event: FormEvent) => {
+    const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
 
-        const user: User = {
-            lastname: this.state.lastname,
-            firstname: this.state.firstname,
-            fathername: this.state.fathername,
-            email: this.state.email,
-            phone: this.state.phone,
-            post: this.state.post,
+        const newUser: User = {
+            lastname,
+            firstname,
+            fathername,
+            email,
+            phone,
+            post,
         };
 
-        if (this.props.user && this.props.user.id) {
-            user.id = this.props.user.id;
+        if (user && user.id) {
+            newUser.id = user.id;
         }
 
-        this.props.onAdd(user);
+        onAdd(newUser);
 
-        if (this.myForm) {
-            this.myForm.reset();
+        if (myForm.current) {
+            myForm.current.reset();
         }
 
-        this.setState({
-            lastname: "",
-            firstname: "",
-            fathername: "",
-            email: "",
-            phone: "",
-            post: ""
-        });
+        setLastname("");
+        setFirstname("");
+        setFathername("");
+        setEmail("");
+        setPhone("");
+        setPost("");
     };
-}
+
+    return (
+        <form ref={myForm} onSubmit={handleSubmit}>
+            <input placeholder="Фамилия" value={lastname} onChange={(e) => setLastname(e.target.value)} />
+            <input placeholder="Имя" value={firstname} onChange={(e) => setFirstname(e.target.value)} />
+            <input placeholder="Отчество" value={fathername} onChange={(e) => setFathername(e.target.value)} />
+            <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input placeholder="Номер телефона" value={phone} onChange={(e) => setPhone(e.target.value)} />
+
+            <select id="posts" name="posts" value={post} onChange={(e) => setPost(e.target.value)}>
+                <option hidden>Выберите должность</option>
+                <option>Инженер</option>
+                <option>Техник</option>
+                <option>Механик</option>
+                <option>Оператор</option>
+                <option>Начальник смены</option>
+            </select>
+            <button type="submit">Добавить</button>
+        </form>
+    );
+};
 
 export default AddUser;

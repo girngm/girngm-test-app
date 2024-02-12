@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import AddUser from "./AddUser";
 import { TiDeleteOutline, TiCogOutline } from "react-icons/ti";
 
@@ -16,55 +16,40 @@ interface UserProps {
     onEdit: (user: any) => void;
 }
 
-interface UserState {
-    editForm: boolean;
-}
+const User: React.FC<UserProps> = ({ user, onDelete, onEdit  }) => {
+    const [editForm, setEditForm] = useState<boolean>(false);
 
-class User extends Component<UserProps, UserState> {
-    constructor(props: UserProps) {
-        super(props);
-        this.state = {
-            editForm: false
-        };
-    }
-
-    render() {
-        const { user } = this.props;
-
-        return (
-            <div className="user">
-                <div className="block">
-                    <div className="element">
-                        <p className="row">{user.lastname}</p>
-                    </div>
-                    <div className="element pre-fathername">
-                        <p className="row">{user.firstname}</p>
-                    </div>
-                    <div className="element pre-email">
-                        <p className="row">{user.fathername}</p>
-                    </div>
-                    <div className="element">
-                        <p className="row">{user.email}</p>
-                    </div>
-                    <div className="element phone">
-                        <p className="row">{user.phone}</p>
-                    </div>
-                    <div className="element">
-                        <p className="row">{user.post}</p>
-                    </div>
-                </div>
-                <TiDeleteOutline onClick={() => this.props.onDelete(user.id)} className="delete-icon" />
-                <TiCogOutline onClick={this.toggleEditForm} className="edit-icon" />
-                {this.state.editForm && <AddUser user={user} onAdd={this.props.onEdit} />}
-            </div>
-        );
-    }
-
-    toggleEditForm = () => {
-        this.setState(prevState => ({
-            editForm: !prevState.editForm
-        }));
+    const toggleEditForm = () => {
+        setEditForm(prevEditForm => !prevEditForm);
     };
-}
+
+    return (
+        <div className="user">
+            <div className="block">
+                <div className="element">
+                    <p className="row">{user.lastname}</p>
+                </div>
+                <div className="element pre-fathername">
+                    <p className="row">{user.firstname}</p>
+                </div>
+                <div className="element pre-email">
+                    <p className="row">{user.fathername}</p>
+                </div>
+                <div className="element">
+                    <p className="row">{user.email}</p>
+                </div>
+                <div className="element phone">
+                    <p className="row">{user.phone}</p>
+                </div>
+                <div className="element">
+                    <p className="row">{user.post}</p>
+                </div>
+            </div>
+            <TiDeleteOutline onClick={() => onDelete(user.id)} className="delete-icon" />
+            <TiCogOutline onClick={toggleEditForm} className="edit-icon" />
+            {editForm && <AddUser user={user} onAdd={onEdit} />}
+        </div>
+    );
+};
 
 export default User;
