@@ -1,35 +1,89 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { Component } from "react";
+import Users from "./components/Users";
+import AddUser from "./components/AddUser";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface User {
+    id: number;
+    lastname: string;
+    firstname: string;
+    fathername: string;
+    email: string;
+    phone: string;
+    post: string;
 }
 
-export default App
+interface AppState {
+    users: User[];
+}
+
+class App extends Component<{}, AppState> {
+
+    constructor(props: {}) {
+        super(props);
+        this.state = {
+            users: [
+                {
+                    id: 1,
+                    lastname: "Иванов",
+                    firstname: "Иван",
+                    fathername: "Иванович",
+                    email: 'ivan.ivanov@yandex.ru',
+                    phone: "+7(904)5823423",
+                    post: "Директор"
+                },
+                {
+                    id: 2,
+                    lastname: "Петров",
+                    firstname: "Пётр",
+                    fathername: "Петрович",
+                    email: 'petr.petrov@yandex.ru',
+                    phone: "+7(951)5713279",
+                    post: "Администратор"
+                }
+            ]
+        };
+        this.addUser = this.addUser.bind(this);
+        this.deleteUser = this.deleteUser.bind(this);
+        this.editUser = this.editUser.bind(this);
+    }
+
+    
+    render() {
+        return (
+            <div>
+                <div>
+                    <header className="header">
+                        Справочник пользователей
+                    </header>
+                    <main>
+                        <Users users={this.state.users} onEdit={this.editUser} onDelete={this.deleteUser} />
+                    </main>
+                    <aside>
+                        <AddUser onAdd={this.addUser} />
+                    </aside>
+                </div>
+            </div>
+        );
+    }
+
+    deleteUser(id: number) {
+        this.setState({
+            users: this.state.users.filter((el) => el.id !== id)
+        });
+    }
+
+    editUser(user: User) {
+        let allUsers = this.state.users.slice();
+        allUsers[user.id - 1] = user;
+        this.setState({ users: [] }, () => {
+            this.setState({ users: [...allUsers] });
+        });
+    }
+    
+    addUser(user: Omit<User, "id">) {
+        const id = this.state.users.length + 1;
+        this.setState({ users: [...this.state.users, { id, ...user }] });
+    }
+}
+
+export default App;
